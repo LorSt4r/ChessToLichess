@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Chess to Lichess</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <img src="icons/icon48.png" alt="" class="logo">
+      <div>
+        <h1>Chess → Lichess</h1>
+        <p class="subtitle">Analisi istantanea</p>
+      </div>
+    </div>
+
+    <div id="status" class="status hidden">
+      <div class="status-icon" id="status-icon"></div>
+      <span id="status-text"></span>
+    </div>
+
+    <button id="btn-transfer" class="btn-primary" disabled>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+      <span>Trasferisci a Lichess</span>
+    </button>
+
+    <div class="info-section">
+      <div class="info-row">
+        <span class="info-label">Shortcut</span>
+        <kbd id="shortcut-display">—</kbd>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Sito</span>
+        <span id="site-status" class="site-badge other">—</span>
+      </div>
+    </div>
+
+    <p class="hint">Apri una partita finita su <strong>Chess.com</strong>, poi clicca il pulsante.</p>
+
+    <div class="footer">
+      <span>v2.0</span>
+      <a href="https://github.com/lorst4r/ChessToLichess" target="_blank">GitHub</a>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
