@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Chess to Lichess",
   "version": "1.3.0",
-  "description": "Trasferisci automaticamente le partite da Chess.com a Lichess per l'analisi con un click.",
+  "description": "Instantly transfer your finished games from Chess.com to Lichess for free computer analysis with a single click.",
   "permissions": [
     "activeTab",
     "storage",
@@ -45,7 +45,7 @@
       "suggested_key": {
         "default": "Alt+Shift+L"
       },
-      "description": "Trasferisci la partita corrente di Chess.com su Lichess"
+      "description": "Transfer current Chess.com game to Lichess"
     }
   }
 }

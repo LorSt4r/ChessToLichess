@@ -42,13 +42,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Main Transfer Flow
 // =============================================
 async function handleTransfer() {
-  broadcast("loading", "Estrazione PGN da Chess.com...");
+  broadcast("loading", "Extracting PGN from Chess.com...");
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   if (!tab || !tab.url || !tab.url.includes("chess.com")) {
-    broadcast("error", "Devi essere su Chess.com!");
-    return { success: false, message: "Devi essere su Chess.com!" };
+    broadcast("error", "Must be on Chess.com!");
+    return { success: false, message: "Must be on Chess.com!" };
   }
 
   try {
@@ -61,18 +61,18 @@ async function handleTransfer() {
     const pgn = results?.[0]?.result;
 
     if (!pgn) {
-      broadcast("error", "PGN non trovato. La partita è finita?");
-      return { success: false, message: "PGN non trovato. La partita è finita?" };
+      broadcast("error", "PGN not found. Is the game finished?");
+      return { success: false, message: "PGN not found. Is the game finished?" };
     }
 
     // 2. Open lichess.org/paste, fill form, check analysis, submit
-    broadcast("loading", "Apertura Lichess...");
+    broadcast("loading", "Opening Lichess...");
     await handleLichessPaste(pgn);
 
-    broadcast("success", "Analisi avviata su Lichess! ♟️");
-    return { success: true, message: "Analisi del computer avviata!" };
+    broadcast("success", "Analysis started on Lichess! ♟️");
+    return { success: true, message: "Computer analysis started!" };
   } catch (err) {
-    const msg = err.message || "Errore sconosciuto";
+    const msg = err.message || "Unknown error";
     broadcast("error", msg);
     return { success: false, message: msg };
   }

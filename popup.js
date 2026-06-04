@@ -11,19 +11,19 @@ document.addEventListener("DOMContentLoaded", () => {
       badge.className = "site-badge chess-com";
       btn.disabled = false;
     } else {
-      badge.textContent = "Non su Chess.com";
+      badge.textContent = "Not on Chess.com";
       badge.className = "site-badge other";
-      setStatus("Vai su una partita finita di Chess.com.", "error");
+      setStatus("Please open a finished Chess.com game.", "error");
     }
   });
 
   // Transfer
   btn.onclick = () => {
     btn.disabled = true;
-    setStatus("Estrazione PGN...", "loading");
+    setStatus("Extracting PGN...", "loading");
     chrome.runtime.sendMessage({ action: "trigger-import-from-popup" }, (r) => {
       if (chrome.runtime.lastError) {
-        setStatus("Errore: " + chrome.runtime.lastError.message, "error");
+        setStatus("Error: " + chrome.runtime.lastError.message, "error");
         btn.disabled = false;
         return;
       }
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setStatus(r.message, "success");
         setTimeout(() => { btn.disabled = false; }, 2000);
       } else {
-        setStatus(r?.message || "Errore.", "error");
+        setStatus(r?.message || "Error during transfer.", "error");
         btn.disabled = false;
       }
     });
@@ -53,6 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Shortcut display
   chrome.commands.getAll((cmds) => {
     const c = cmds.find((x) => x.name === "transfer-to-lichess");
-    document.getElementById("shortcut-display").textContent = c?.shortcut || "Non impostata";
+    document.getElementById("shortcut-display").textContent = c?.shortcut || "Not set";
   });
 });

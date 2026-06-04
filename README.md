@@ -1,25 +1,25 @@
 # ♟️ Chess to Lichess
 
-Estensione Brave/Chrome che trasferisce all'istante le partite da **Chess.com** a **Lichess** avviando l'analisi del computer automatica con un solo click.
+Brave and Chrome browser extension that instantly transfers your finished games from **Chess.com** to **Lichess**, launching automatic computer analysis with a single click.
 
-![Demo di funzionamento](demo.gif)
+![How it works](demo.gif)
 
-## Perché usare questa estensione?
+## Why use this extension?
 
-L'analisi Stockfish illimitata su Chess.com fa parte dei piani a pagamento (fino a 100€/anno). Su Lichess l'analisi cloud è completamente gratuita, potente e illimitata. 
-Questa estensione automatizza il fastidioso processo manuale di esportazione/importazione del PGN in **meno di 3 secondi**.
+Unlimited Stockfish computer analysis on Chess.com is restricted to paid premium tiers (up to $100/year). On Lichess, cloud server analysis is completely free, powerful, and unlimited. 
+This extension automates the annoying manual process of exporting and importing PGN files in **less than 3 seconds**.
 
-## Come Funziona
+## Features
 
-1. Finisci una partita su Chess.com.
-2. Clicca l'**icona dell'estensione**, il **pulsante viola** che compare a lato della scacchiera, oppure usa la combinazione di tasti `Alt+Shift+L`.
-3. L'estensione estrae il PGN, apre Lichess, compila il form, attiva l'opzione *"Chiedi un'analisi del computer"* e avvia l'importazione automaticamente.
+1. Finish a game on Chess.com.
+2. Click the **extension icon**, the **purple floating button** next to the chessboard, or press `Alt+Shift+L`.
+3. The extension extracts the PGN, opens Lichess, fills out the paste form, checks *"Request computer analysis"*, and submits it automatically.
 
 ---
 
-## Supporta il Progetto ☕
+## Support the Project ☕
 
-Se questa estensione ti fa risparmiare tempo e denaro rispetto a un abbonamento Premium, offrimi un caffè su Ko-fi!
+If this extension saves you time and money compared to a Chess.com Premium subscription, consider buying me a coffee on Ko-fi!
 
 <a href="https://ko-fi.com/lorenzovasile" target="_blank">
   <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="ko-fi" />
@@ -27,33 +27,33 @@ Se questa estensione ti fa risparmiare tempo e denaro rispetto a un abbonamento 
 
 ---
 
-## Installazione per Sviluppatori
+## Installation (Developer Mode)
 
-Se desideri caricarla manualmente senza passare dallo Store:
+If you want to load it manually without using the Web Store:
 
-1. Scarica o clona questa repository.
-2. Apri Brave/Chrome e vai su `chrome://extensions/` (o `brave://extensions/`).
-3. Abilita la **Modalità sviluppatore** in alto a destra.
-4. Clicca su **"Carica estensione non pacchettizzata"** (Load unpacked) e seleziona la cartella del progetto.
+1. Clone or download this repository.
+2. Open Chrome/Brave and navigate to `chrome://extensions/` (or `brave://extensions/`).
+3. Enable **Developer mode** in the top right corner.
+4. Click **"Load unpacked"** and select the extension folder.
 
-### Scorciatoia Personalizzabile
-Puoi modificare la scorciatoia da tastiera predefinita (`Alt+Shift+L`) andando su `chrome://extensions/shortcuts`.
+### Customizable Shortcut
+You can change the default keyboard shortcut (`Alt+Shift+L`) by visiting `chrome://extensions/shortcuts`.
 
-## Struttura del Progetto
+## Project Structure
 
 ```
-├── manifest.json       Manifest V3 per estensioni Chrome
-├── background.js       Service worker (gestione automazione Lichess)
-├── content-chess.js    FAB (Pulsante Fluttuante) su Chess.com
-├── popup.html/css/js   UI del popup
-├── demo.gif            Animazione dimostrativa
-└── icons/              Asset grafici dell'estensione
+├── manifest.json       Manifest V3 config
+├── background.js       Service worker (Lichess paste automation)
+├── content-chess.js    Floating Action Button (FAB) on Chess.com
+├── popup.html/css/js   Extension popup UI
+├── demo.gif            Working demonstration animation
+└── icons/              Extension icon assets
 ```
 
 ## Privacy
 
-Questa estensione non raccoglie, memorizza o invia dati personali. Il PGN della partita viene letto localmente dal browser e inserito su Lichess.org. Nessun server di terze parti è coinvolto.
+This extension does not collect, store, or transmit any personal data. Game PGNs are read locally in your browser and submitted directly to Lichess. No external servers are involved.
 
-## Licenza
+## License
 
 MIT
