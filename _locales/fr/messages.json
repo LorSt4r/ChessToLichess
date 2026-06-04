@@ -1,0 +1,19 @@
+{
+  "extName": { "message": "Chess to Lichess" },
+  "extDescription": { "message": "Transférez instantanément vos parties terminées de Chess.com vers Lichess pour une analyse informatique gratuite en un seul clic." },
+  "instantAnalysis": { "message": "Analyse Instantanée" },
+  "transferButton": { "message": "Transférer vers Lichess" },
+  "shortcut": { "message": "Raccourci" },
+  "website": { "message": "Site Web" },
+  "hint": { "message": "Ouvrez une partie terminée sur Chess.com, puis cliquez sur le bouton ou appuyez sur Alt+Shift+L." },
+  "buyCoffee": { "message": "Offrez-moi un café ☕" },
+  "notOnChessCom": { "message": "Pas sur Chess.com" },
+  "pleaseOpenGame": { "message": "Veuillez ouvrir une partie terminée sur Chess.com." },
+  "extractingPgn": { "message": "Extraction du PGN..." },
+  "openingLichess": { "message": "Ouverture de Lichess..." },
+  "analysisStarted": { "message": "Analyse lancée sur Lichess ! ♟️" },
+  "compAnalysisStarted": { "message": "Analyse informatique démarrée !" },
+  "mustBeOnChess": { "message": "Vous devez être sur Chess.com !" },
+  "pgnNotFound": { "message": "PGN introuvable. La partie est-elle terminée ?" },
+  "notSet": { "message": "Non défini" }
+}
