@@ -77,4 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const c = cmds.find((x) => x.name === "transfer-to-lichess");
     document.getElementById("shortcut-display").textContent = c?.shortcut || chrome.i18n.getMessage("notSet");
   });
+
+  // Version display
+  document.getElementById("version-display").textContent = "v" + chrome.runtime.getManifest().version;
 });
+
