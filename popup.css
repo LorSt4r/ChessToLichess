@@ -64,6 +64,24 @@ body {
 .btn-primary:active:not(:disabled) { transform: scale(.98); }
 .btn-primary:disabled { opacity: .45; cursor: not-allowed; }
 
+/* Secondary/Donate Button */
+.btn-secondary {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 10px; border: 1px solid rgba(255, 152, 0, 0.2); border-radius: 12px;
+  font-size: 13px; font-weight: 600; text-decoration: none; color: #ffb74d; cursor: pointer;
+  background: rgba(255, 152, 0, 0.04);
+  transition: all .25s ease;
+}
+.btn-secondary:hover {
+  background: rgba(255, 152, 0, 0.08);
+  border-color: rgba(255, 152, 0, 0.4);
+  color: #ffa726;
+  transform: translateY(-1px);
+}
+.btn-secondary:active {
+  transform: scale(.98);
+}
+
 /* Info */
 .info-section {
   display: flex; flex-direction: column; gap: 6px;

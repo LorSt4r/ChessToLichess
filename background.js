@@ -13,6 +13,13 @@ chrome.commands.onCommand.addListener(async (command) => {
   }
 });
 
+// Open welcome page on install
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === "install") {
+    chrome.tabs.create({ url: "https://www.buymeacoffee.com/lorst4r" });
+  }
+});
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "trigger-import-from-popup") {
     handleTransfer()
