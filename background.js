@@ -10,19 +10,30 @@
  */
 
 // =============================================
-// Extension Icon Click Handler
+// One-Click Mode: Popup Management
 // =============================================
-// No default_popup in manifest → onClicked always fires.
-// We decide here whether to open the popup or transfer directly.
-chrome.action.onClicked.addListener(async (tab) => {
-  const { oneClickMode } = await chrome.storage.local.get("oneClickMode");
-  if (oneClickMode) {
-    // One-click mode: trigger transfer directly
-    await handleTransfer();
-  } else {
-    // Normal mode: open the popup
-    openPopupFallback();
+// No default_popup in manifest. We use setPopup() which PERSISTS
+// across service worker restarts. Chrome handles the popup natively
+// so it attaches to the icon correctly.
+
+// Restore popup state on service worker startup
+chrome.storage.local.get("oneClickMode", ({ oneClickMode }) => {
+  chrome.action.setPopup({ popup: oneClickMode ? "" : "popup.html" });
+});
+
+// When storage changes (toggle from popup or context menu), update popup
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && changes.oneClickMode) {
+    const enabled = changes.oneClickMode.newValue;
+    chrome.action.setPopup({ popup: enabled ? "" : "popup.html" });
+    // Sync context menu checkbox
+    chrome.contextMenus.update("toggle-oneclick", { checked: !!enabled }).catch(() => {});
   }
+});
+
+// onClicked ONLY fires when popup is "" (one-click mode ON)
+chrome.action.onClicked.addListener(async (tab) => {
+  await handleTransfer();
 });
 
 // =============================================
@@ -43,37 +54,20 @@ chrome.runtime.onInstalled.addListener((details) => {
     contexts: ["action"],
   });
 
-  if (details.reason === "install") {
-    chrome.tabs.create({ url: "https://ko-fi.com/lorenzovasile" });
-  }
-
-  // Sync checkbox state with storage
+  // Set popup state based on stored preference
   chrome.storage.local.get("oneClickMode", ({ oneClickMode }) => {
+    chrome.action.setPopup({ popup: oneClickMode ? "" : "popup.html" });
     chrome.contextMenus.update("toggle-oneclick", { checked: !!oneClickMode });
   });
-});
 
-// Sync context menu checkbox when storage changes
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "local" && changes.oneClickMode) {
-    chrome.contextMenus.update("toggle-oneclick", {
-      checked: !!changes.oneClickMode.newValue,
-    }).catch(() => {});
+  if (details.reason === "install") {
+    chrome.tabs.create({ url: "https://ko-fi.com/lorenzovasile" });
   }
 });
 
 chrome.contextMenus.onClicked.addListener(async (info) => {
   if (info.menuItemId === "open-menu") {
-    openPopupFallback();
-  }
-  if (info.menuItemId === "toggle-oneclick") {
-    await chrome.storage.local.set({ oneClickMode: info.checked });
-  }
-});
-
-// Helper to open popup with fallback
-function openPopupFallback() {
-  chrome.action.openPopup().catch(() => {
+    // Open popup as a standalone window (context menu can't trigger icon-attached popup)
     chrome.windows.create({
       url: chrome.runtime.getURL("popup.html"),
       type: "popup",
@@ -81,8 +75,11 @@ function openPopupFallback() {
       height: 520,
       focused: true,
     });
-  });
-}
+  }
+  if (info.menuItemId === "toggle-oneclick") {
+    await chrome.storage.local.set({ oneClickMode: info.checked });
+  }
+});
 
 // =============================================
 // Keyboard Shortcut
@@ -92,7 +89,6 @@ chrome.commands.onCommand.addListener(async (command) => {
     await handleTransfer();
   }
 });
-
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "trigger-import-from-popup") {
