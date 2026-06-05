@@ -15,5 +15,9 @@
   "compAnalysisStarted": { "message": "¡Análisis de computadora iniciado!" },
   "mustBeOnChess": { "message": "¡Debes estar en Chess.com!" },
   "pgnNotFound": { "message": "PGN no encontrado. ¿Ha terminado la partida?" },
-  "notSet": { "message": "No configurado" }
+  "notSet": { "message": "No configurado" },
+  "gamesAnalyzed": { "message": "Partidas analizadas" },
+  "moneySaved": { "message": "Dinero ahorrado" },
+  "oneClickMode": { "message": "Modo un clic" },
+  "oneClickHint": { "message": "Cuando está activado, al hacer clic en el icono de la extensión se inicia directamente la transferencia." }
 }

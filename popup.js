@@ -17,8 +17,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const statusEl = document.getElementById("status");
   const statusText = document.getElementById("status-text");
   const badge = document.getElementById("site-status");
+  const toggleOneClick = document.getElementById("toggle-oneclick");
+  const hintOneClick = document.getElementById("hint-oneclick");
+  const statGames = document.getElementById("stat-games");
+  const statSaved = document.getElementById("stat-saved");
 
-  // Detect site
+  // =============================================
+  // Usage Stats
+  // =============================================
+  const COST_PER_GAME = 99.00 / 365; // Chess.com Diamond $99/year ≈ $0.27/game
+
+  chrome.storage.local.get(["usageCount"], (data) => {
+    const count = data.usageCount || 0;
+    statGames.textContent = count.toLocaleString();
+    statSaved.textContent = "$" + (count * COST_PER_GAME).toFixed(2);
+  });
+
+  // =============================================
+  // One-Click Mode Toggle
+  // =============================================
+  chrome.storage.local.get(["oneClickMode"], (data) => {
+    toggleOneClick.checked = !!data.oneClickMode;
+    hintOneClick.style.display = data.oneClickMode ? "block" : "none";
+  });
+
+  toggleOneClick.addEventListener("change", () => {
+    const enabled = toggleOneClick.checked;
+    chrome.storage.local.set({ oneClickMode: enabled });
+    hintOneClick.style.display = enabled ? "block" : "none";
+  });
+
+  // =============================================
+  // Detect Site
+  // =============================================
   chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     if (tab?.url?.includes("chess.com")) {
       badge.textContent = "Chess.com ✓";
@@ -31,7 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Transfer
+  // =============================================
+  // Transfer Button
+  // =============================================
   btn.onclick = () => {
     btn.disabled = true;
     setStatus(chrome.i18n.getMessage("extractingPgn"), "loading");
@@ -43,6 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (r?.success) {
         setStatus(r.message, "success");
+        // Refresh stats after successful transfer
+        chrome.storage.local.get(["usageCount"], (data) => {
+          const count = data.usageCount || 0;
+          statGames.textContent = count.toLocaleString();
+          statSaved.textContent = "$" + (count * COST_PER_GAME).toFixed(2);
+        });
         setTimeout(() => { btn.disabled = false; }, 2000);
       } else {
         setStatus(r?.message || chrome.i18n.getMessage("errorTransfer"), "error");
@@ -51,7 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Live status from background
+  // =============================================
+  // Live Status from Background
+  // =============================================
   chrome.runtime.onMessage.addListener((msg) => {
     if (msg.action === "status-update") {
       // Find the translated text from background message keys if possible
@@ -72,13 +113,16 @@ document.addEventListener("DOMContentLoaded", () => {
     statusText.textContent = msg;
   }
 
-  // Shortcut display
+  // =============================================
+  // Shortcut Display
+  // =============================================
   chrome.commands.getAll((cmds) => {
     const c = cmds.find((x) => x.name === "transfer-to-lichess");
     document.getElementById("shortcut-display").textContent = c?.shortcut || chrome.i18n.getMessage("notSet");
   });
 
-  // Version display
+  // =============================================
+  // Version Display
+  // =============================================
   document.getElementById("version-display").textContent = "v" + chrome.runtime.getManifest().version;
 });
-

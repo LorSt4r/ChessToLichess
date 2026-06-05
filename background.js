@@ -1,12 +1,44 @@
 /**
- * Chess to Lichess - Background Service Worker v1.3.0
+ * Chess to Lichess - Background Service Worker v1.4.0
  *
  * Flow:
  * 1. Extract PGN from chess.com via injected script
  * 2. Store PGN in chrome.storage.local
  * 3. Open lichess.org/paste, fill PGN, check analysis checkbox, submit form
+ *
+ * v1.4.0: One-click mode, usage counter, FAB removed
  */
 
+// =============================================
+// One-Click Mode Management
+// =============================================
+async function applyOneClickMode() {
+  const { oneClickMode } = await chrome.storage.local.get("oneClickMode");
+  if (oneClickMode) {
+    chrome.action.setPopup({ popup: "" });
+  } else {
+    chrome.action.setPopup({ popup: "popup.html" });
+  }
+}
+
+// Apply on startup
+applyOneClickMode();
+
+// Listen for storage changes to toggle dynamically
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && changes.oneClickMode) {
+    applyOneClickMode();
+  }
+});
+
+// When one-click mode is ON, clicking the icon fires this
+chrome.action.onClicked.addListener(async (tab) => {
+  await handleTransfer();
+});
+
+// =============================================
+// Keyboard Shortcut
+// =============================================
 chrome.commands.onCommand.addListener(async (command) => {
   if (command === "transfer-to-lichess") {
     await handleTransfer();
@@ -71,6 +103,9 @@ async function handleTransfer() {
     broadcast("loading", chrome.i18n.getMessage("openingLichess"));
     await handleLichessPaste(pgn);
 
+    // 3. Increment usage counter
+    await incrementUsageCounter();
+
     broadcast("success", chrome.i18n.getMessage("analysisStarted"));
     return { success: true, message: chrome.i18n.getMessage("compAnalysisStarted") };
   } catch (err) {
@@ -78,6 +113,14 @@ async function handleTransfer() {
     broadcast("error", msg);
     return { success: false, message: msg };
   }
+}
+
+// =============================================
+// Usage Counter
+// =============================================
+async function incrementUsageCounter() {
+  const { usageCount = 0 } = await chrome.storage.local.get("usageCount");
+  await chrome.storage.local.set({ usageCount: usageCount + 1 });
 }
 
 // =============================================

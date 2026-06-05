@@ -25,6 +25,21 @@
       <span data-i18n="transferButton">Transfer to Lichess</span>
     </button>
 
+    <!-- Stats Section -->
+    <div class="stats-section">
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-value" id="stat-games">0</span>
+          <span class="stat-label" data-i18n="gamesAnalyzed">Games analyzed</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-value stat-money" id="stat-saved">$0.00</span>
+          <span class="stat-label" data-i18n="moneySaved">Money saved</span>
+        </div>
+      </div>
+    </div>
+
     <div class="info-section">
       <div class="info-row">
         <span class="info-label" data-i18n="shortcut">Shortcut</span>
@@ -34,9 +49,17 @@
         <span class="info-label" data-i18n="website">Website</span>
         <span id="site-status" class="site-badge other">—</span>
       </div>
+      <div class="info-row">
+        <span class="info-label" data-i18n="oneClickMode">One-click mode</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-oneclick">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
     </div>
 
     <p class="hint" data-i18n="hint">Open a finished game on Chess.com, then click the button or press Alt+Shift+L.</p>
+    <p class="hint hint-oneclick" id="hint-oneclick" data-i18n="oneClickHint" style="display:none;">When enabled, clicking the extension icon directly starts the transfer.</p>
 
     <!-- Donation Section -->
     <a href="https://ko-fi.com/lorenzovasile" target="_blank" id="btn-donate" class="btn-secondary">
@@ -44,7 +67,7 @@
     </a>
 
     <div class="footer">
-      <span id="version-display">v1.3.0</span>
+      <span id="version-display">v1.4.0</span>
       <a href="https://github.com/lorst4r/ChessToLichess" target="_blank">GitHub</a>
     </div>
   </div>

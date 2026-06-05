@@ -15,5 +15,9 @@
   "compAnalysisStarted": { "message": "Computer analysis started!" },
   "mustBeOnChess": { "message": "Must be on Chess.com!" },
   "pgnNotFound": { "message": "PGN not found. Is the game finished?" },
-  "notSet": { "message": "Not set" }
+  "notSet": { "message": "Not set" },
+  "gamesAnalyzed": { "message": "Games analyzed" },
+  "moneySaved": { "message": "Money saved" },
+  "oneClickMode": { "message": "One-click mode" },
+  "oneClickHint": { "message": "When enabled, clicking the extension icon directly starts the transfer." }
 }

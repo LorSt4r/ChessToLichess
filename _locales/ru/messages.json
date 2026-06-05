@@ -15,5 +15,9 @@
   "compAnalysisStarted": { "message": "Компьютерный анализ запущен!" },
   "mustBeOnChess": { "message": "Вы должны быть на Chess.com!" },
   "pgnNotFound": { "message": "PGN не найден. Партия завершена?" },
-  "notSet": { "message": "Не установлено" }
+  "notSet": { "message": "Не установлено" },
+  "gamesAnalyzed": { "message": "Партий проанализировано" },
+  "moneySaved": { "message": "Денег сэкономлено" },
+  "oneClickMode": { "message": "Режим одного клика" },
+  "oneClickHint": { "message": "При включении клик по значку расширения сразу запускает перенос." }
 }

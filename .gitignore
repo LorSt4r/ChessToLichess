@@ -12,3 +12,6 @@ Thumbs.db
 # Saved web pages (debug)
 *.mhtml
 *_files/
+
+# Build output
+*.zip
