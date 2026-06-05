@@ -19,5 +19,6 @@
   "gamesAnalyzed": { "message": "Partite analizzate" },
   "moneySaved": { "message": "Soldi risparmiati" },
   "oneClickMode": { "message": "Modalità un click" },
-  "oneClickHint": { "message": "Quando attivo, cliccare l'icona dell'estensione avvia direttamente il trasferimento." }
+  "oneClickHint": { "message": "Quando attivo, cliccare l'icona dell'estensione avvia direttamente il trasferimento." },
+  "openMenu": { "message": "Apri menù" }
 }

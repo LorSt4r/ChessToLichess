@@ -21,20 +21,68 @@ chrome.action.onClicked.addListener(async (tab) => {
     await handleTransfer();
   } else {
     // Normal mode: open the popup
-    try {
-      await chrome.action.openPopup();
-    } catch (e) {
-      // Fallback for older Chrome (< 127): open popup as a window
-      chrome.windows.create({
-        url: chrome.runtime.getURL("popup.html"),
-        type: "popup",
-        width: 360,
-        height: 520,
-        focused: true,
-      });
-    }
+    openPopupFallback();
   }
 });
+
+// =============================================
+// Context Menu (right-click on extension icon)
+// =============================================
+chrome.runtime.onInstalled.addListener((details) => {
+  // Create context menu items on the extension icon
+  chrome.contextMenus.create({
+    id: "open-menu",
+    title: chrome.i18n.getMessage("openMenu") || "Open menu",
+    contexts: ["action"],
+  });
+  chrome.contextMenus.create({
+    id: "toggle-oneclick",
+    title: chrome.i18n.getMessage("oneClickMode") || "One-click mode",
+    type: "checkbox",
+    checked: false,
+    contexts: ["action"],
+  });
+
+  if (details.reason === "install") {
+    chrome.tabs.create({ url: "https://ko-fi.com/lorenzovasile" });
+  }
+
+  // Sync checkbox state with storage
+  chrome.storage.local.get("oneClickMode", ({ oneClickMode }) => {
+    chrome.contextMenus.update("toggle-oneclick", { checked: !!oneClickMode });
+  });
+});
+
+// Sync context menu checkbox when storage changes
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && changes.oneClickMode) {
+    chrome.contextMenus.update("toggle-oneclick", {
+      checked: !!changes.oneClickMode.newValue,
+    }).catch(() => {});
+  }
+});
+
+chrome.contextMenus.onClicked.addListener(async (info) => {
+  if (info.menuItemId === "open-menu") {
+    openPopupFallback();
+  }
+  if (info.menuItemId === "toggle-oneclick") {
+    await chrome.storage.local.set({ oneClickMode: info.checked });
+  }
+});
+
+// Helper to open popup with fallback
+function openPopupFallback() {
+  chrome.action.openPopup().catch(() => {
+    chrome.windows.create({
+      url: chrome.runtime.getURL("popup.html"),
+      type: "popup",
+      width: 360,
+      height: 520,
+      focused: true,
+    });
+  });
+}
 
 // =============================================
 // Keyboard Shortcut
@@ -45,12 +93,6 @@ chrome.commands.onCommand.addListener(async (command) => {
   }
 });
 
-// Open welcome page on install
-chrome.runtime.onInstalled.addListener((details) => {
-  if (details.reason === "install") {
-    chrome.tabs.create({ url: "https://ko-fi.com/lorenzovasile" });
-  }
-});
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "trigger-import-from-popup") {

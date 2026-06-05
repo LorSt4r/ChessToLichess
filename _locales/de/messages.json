@@ -19,5 +19,6 @@
   "gamesAnalyzed": { "message": "Analysierte Partien" },
   "moneySaved": { "message": "Geld gespart" },
   "oneClickMode": { "message": "Ein-Klick-Modus" },
-  "oneClickHint": { "message": "Wenn aktiviert, startet ein Klick auf das Erweiterungssymbol direkt die Übertragung." }
+  "oneClickHint": { "message": "Wenn aktiviert, startet ein Klick auf das Erweiterungssymbol direkt die Übertragung." },
+  "openMenu": { "message": "Menü öffnen" }
 }
