@@ -10,30 +10,30 @@
  */
 
 // =============================================
-// One-Click Mode Management
+// Extension Icon Click Handler
 // =============================================
-async function applyOneClickMode() {
+// No default_popup in manifest → onClicked always fires.
+// We decide here whether to open the popup or transfer directly.
+chrome.action.onClicked.addListener(async (tab) => {
   const { oneClickMode } = await chrome.storage.local.get("oneClickMode");
   if (oneClickMode) {
-    chrome.action.setPopup({ popup: "" });
+    // One-click mode: trigger transfer directly
+    await handleTransfer();
   } else {
-    chrome.action.setPopup({ popup: "popup.html" });
+    // Normal mode: open the popup
+    try {
+      await chrome.action.openPopup();
+    } catch (e) {
+      // Fallback for older Chrome (< 127): open popup as a window
+      chrome.windows.create({
+        url: chrome.runtime.getURL("popup.html"),
+        type: "popup",
+        width: 360,
+        height: 520,
+        focused: true,
+      });
+    }
   }
-}
-
-// Apply on startup
-applyOneClickMode();
-
-// Listen for storage changes to toggle dynamically
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "local" && changes.oneClickMode) {
-    applyOneClickMode();
-  }
-});
-
-// When one-click mode is ON, clicking the icon fires this
-chrome.action.onClicked.addListener(async (tab) => {
-  await handleTransfer();
 });
 
 // =============================================
@@ -99,12 +99,13 @@ async function handleTransfer() {
       return { success: false, message: errorMsg };
     }
 
-    // 2. Open lichess.org/paste, fill form, check analysis, submit
+    // 2. Increment usage counter immediately after PGN extraction
+    //    (do this before opening Lichess so it's counted even if paste fails)
+    await incrementUsageCounter();
+
+    // 3. Open lichess.org/paste, fill form, check analysis, submit
     broadcast("loading", chrome.i18n.getMessage("openingLichess"));
     await handleLichessPaste(pgn);
-
-    // 3. Increment usage counter
-    await incrementUsageCounter();
 
     broadcast("success", chrome.i18n.getMessage("analysisStarted"));
     return { success: true, message: chrome.i18n.getMessage("compAnalysisStarted") };
